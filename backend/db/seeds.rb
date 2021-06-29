@@ -39,6 +39,12 @@ users = User.create([
     email_address: "janebrown@gmail.com",
     password: "123abc",
     organisation: organisations[1]
+  },
+  {
+    name: "Oliver Smith",
+    email_address: "oliversmith@gmail.com",
+    password: "567def",
+    organisation: nil
   }
 ])
 

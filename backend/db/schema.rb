@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2021_06_26_075125) do
     t.datetime "start"
     t.datetime "finish"
     t.integer "break_length"
-    t.bigint "user_id", null: false
+    t.bigint "user_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["user_id"], name: "index_shifts_on_user_id"
@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 2021_06_26_075125) do
   create_table "users", force: :cascade do |t|
     t.string "name"
     t.string "email_address"
-    t.string "password"
-    t.bigint "organisation_id", null: false
+    t.string "password_digest"
+    t.bigint "organisation_id"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["organisation_id"], name: "index_users_on_organisation_id"
