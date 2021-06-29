@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Container, Typography, TextField, Button, Grid, Link } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom"
-import SignInHook from './SignInHook';
+import SignInHook from './CustomHooks';
 
 
 export default function SignInForm(props) {
@@ -11,7 +11,7 @@ export default function SignInForm(props) {
   return (
     <React.Fragment>
       <Container component="main">
-        <Typography component="h2" variant="h2">
+        <Typography component="h3" variant="h3">
           Sign in
         </Typography>
         <form onSubmit={handleSubmit}>

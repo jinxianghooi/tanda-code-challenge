@@ -7,6 +7,12 @@ module Api
         render json: OrganisationSerializer.new(organisations).serializable_hash.to_json
       end
 
+      def show
+        organisations = Organisation.find_by(id: params[:id])
+
+        render json: OrganisationSerializer.new(organisations).serializable_hash.to_json
+      end
+
       def create
         organisation = Organisation.new(organisation_params)
 
