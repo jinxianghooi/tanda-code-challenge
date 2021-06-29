@@ -1,12 +1,34 @@
 import React from 'react'
 import { Container, Typography, TextField, Button, Grid, Link } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom"
+import { Link as RouterLink, Redirect, useHistory } from "react-router-dom"
 import SignInHook from './CustomHooks';
+import axios from 'axios';
 
 
 export default function SignInForm(props) {
-  // add axios callback soon
-  const { inputs, handleInputChange, handleSubmit } = SignInHook();
+
+  const { inputs, handleInputChange, handleSubmit } = SignInHook(handleChange);
+  const qs = require('qs');
+  const history = useHistory();
+
+  function handleChange() {
+    axios.post('/api/v1/login', qs.stringify(
+      {
+        user: {
+          email_address: inputs.email,
+          password: inputs.password
+        }
+      })
+      , { withCredentials: true }).then(response => {
+        if (response.data.logged_in) {
+          console.log("logged in");
+          props.handleLogin();
+          history.push("/user");
+        } else {
+          // not sure what to do yet
+        }
+      }).catch(error => console.log('api errors:', error))
+  };
 
   return (
     <React.Fragment>

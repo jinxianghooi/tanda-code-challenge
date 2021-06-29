@@ -4,7 +4,7 @@ import { Link as RouterLink } from "react-router-dom"
 import axios from "axios";
 
 export default function User(props) {
-  const name = props.attributes.name;
+  const name = props.name;
   const [organisationData, setOrganisationData] = useState({});
 
   useEffect(() => {
@@ -13,10 +13,10 @@ export default function User(props) {
 
   function generateListItem() {
     return organisationData.data.map((organisation) =>
-      <ListItem>
+      <ListItem key={organisation.attributes.name}>
         <ListItemText primary={organisation.attributes.name} />
         <RouterLink to={"/organisation/" + organisation.id}>Join</RouterLink>
-        <RouterLink to>Edit</RouterLink>
+        <RouterLink>Edit</RouterLink>
       </ListItem >)
 
   };

@@ -7,7 +7,7 @@ module Api
         @user = User.find(params[:id])
 
         if @user
-          render json: UserSerializer.new(@user).serializable_hash.to_json
+          render json: @user
         else
           render json: { error: user.errors.messages }, status: 500
         end
@@ -18,7 +18,7 @@ module Api
 
         if @user.save
           login!
-          render json: UserSerializer.new(@user).serializable_hash.to_json
+          render json: @user
         else
           render json: { error: user.errors.messages }, status: 500
         end
@@ -28,7 +28,7 @@ module Api
         user = User.find_by(id: params[:id])
 
         if user.update(user_params)
-          render json: UserSerializer.new(user).serializable_hash.to_json
+          render json: @user
         else
           render json: { error: user.errors.messages }, status: 500
         end

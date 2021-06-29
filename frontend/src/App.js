@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Typography, AppBar, Toolbar, IconButton, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Home from "./components/Home";
 import SignInForm from "./components/SignInForm";
 import SignupForm from "./components/SignupForm";
@@ -19,13 +19,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-function App() {
+export default function App() {
   const classes = useStyles();
-  const [userData, setUserData] = useState({});
+
+  // Authentication stuff
+  const hasFetchedData = useRef(false);
+  const [session, setSession] = useState({
+    isLoggedIn: false,
+    user: {}
+  });
 
   useEffect(() => {
-    axios.get('/api/v1/users/1').then(res => setUserData(res.data))
-  }, []);
+    if (!hasFetchedData.current) {
+      loginStatus();
+      hasFetchedData.current = true;
+    }
+  });
+
+  function handleLogin(data) {
+    setSession({ isLoggedIn: true, user: data })
+  }
+
+  function handleLogout() {
+    setSession({ isLoggedIn: false, user: {} })
+  }
+
+  function loginStatus() {
+    axios.get('/api/v1/logged_in', { withCredentials: true })
+      .then(response => {
+        if (response.data.logged_in) {
+          handleLogin(response.data.user);
+          console.log(response.data.user)
+        } else {
+          handleLogout(); //infinite loop tiggered because of this
+        }
+      }).catch(error => console.log('api errors', error))
+  }
+
+  // useEffect(() => {
+  //   axios.get('/api/v1/users/1').then(res => setUserData(res.data))
+  // }, []);
 
   return (
     <div>
@@ -46,17 +79,18 @@ function App() {
 
         <Switch>
           <Route path="/" exact component={Home} />
-          <Route path="/signin" component={SignInForm} />
-          {userData.data ? <Route
+          <Route path="/signin" render={(props) => (
+            <SignInForm handleLogin={handleLogin}
+              handleLogout={handleLogout} />
+          )} />
+          {<Route
             path="/user"
             render={(props) => (
-              <User {...userData.data} />
-            )} /> : null}
+              <User {...session.user} />
+            )} />}
           <Route path="/signup" component={SignupForm} />
         </Switch>
       </Router>
     </div>
   );
 }
-
-export default App;
