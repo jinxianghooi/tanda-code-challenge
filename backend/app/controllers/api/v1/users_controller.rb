@@ -32,7 +32,7 @@ module Api
 
         if user.update(user_params)
           render json: {
-            status: :updated,
+            updated: true,
             user: @user
           }
         else

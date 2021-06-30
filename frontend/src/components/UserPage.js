@@ -8,7 +8,6 @@ import OrganisationList from "./OrganisationList";
 export default function User(props) {
   const name = props.name;
   const history = useHistory();
-  const hasFetchedData = useRef(false);
 
   // useEffect(() => {
   //   if (props.organisation_id) {
@@ -26,8 +25,7 @@ export default function User(props) {
     } else {
       history.push("/user/join");
     }
-    hasFetchedData.current = true;
-  }, [props.organisation_id, history])
+  })
 
   // function updateUserDetails(organisation_id, organisation_name) {
   //   axios.patch("/api/v1/users/" + props.id, qs.stringify(
@@ -83,10 +81,10 @@ export default function User(props) {
           } */}
 
           <Route path={"/user/join"}>
-            <OrganisationList user={props} />
+            <OrganisationList user={props} handleChange={props.handleLogin} />
           </Route>
           <Route path={"/user/organisation_id_" + props.organisation_id}>
-            <OrganisationCard />
+            <OrganisationCard user={props} handleChange={props.handleLogin} />
           </Route>
           {/* {!props.organisation_id ?
           OrganisationsList() : <OrganisationCard organisation_data={organisationData} />} */}

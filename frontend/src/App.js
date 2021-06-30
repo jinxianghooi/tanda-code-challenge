@@ -102,7 +102,7 @@ export default function App() {
               handleLogout={handleLogout} />
           </Route>
           <Route path="/user">
-            <User {...session.user} />
+            <User {...session.user} handleLogin={handleLogin} />
           </Route>
           <Route path="/signup">
             <SignupForm handleLogin={handleLogin} />

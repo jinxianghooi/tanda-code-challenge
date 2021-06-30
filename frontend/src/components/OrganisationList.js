@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Typography, Button, List, ListItem, ListItemText } from '@material-ui/core';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 
 export default function OrganisationList(props) {
   const [organisationData, setOrganisationData] = useState({});
@@ -21,10 +21,10 @@ export default function OrganisationList(props) {
         }
       }), { withCredentials: true })
       .then(response => {
-        if (response.data.status === "updated") {
+        if (response.data.updated) {
           console.log("updated");
-          props.handleLogin(response.data.user);
-          history.push("/user/organisation_id_" + props.user.organisation_id);
+          history.push("/user");
+          props.handleChange(response.data.user);
         } else {
           // do error stuff here
         }
