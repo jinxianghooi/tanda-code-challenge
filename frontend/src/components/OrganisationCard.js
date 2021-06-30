@@ -25,8 +25,8 @@ export default function OrganisationCard(props) {
 			.then(response => {
 				if (response.data.updated) {
 					console.log("updated");
-					history.push("/user/join");
 					props.handleChange(response.data.user);
+					history.push("/user/join");
 				} else {
 					// do error stuff here
 				}

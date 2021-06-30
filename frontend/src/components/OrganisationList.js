@@ -23,8 +23,8 @@ export default function OrganisationList(props) {
       .then(response => {
         if (response.data.updated) {
           console.log("updated");
-          history.push("/user");
           props.handleChange(response.data.user);
+          history.push("/user/organisation_id_" + props.user.organisation_id);
         } else {
           // do error stuff here
         }

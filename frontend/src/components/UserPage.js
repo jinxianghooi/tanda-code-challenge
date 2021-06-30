@@ -25,7 +25,7 @@ export default function User(props) {
     } else {
       history.push("/user/join");
     }
-  })
+  }, [props.organisation_id, history])
 
   // function updateUserDetails(organisation_id, organisation_name) {
   //   axios.patch("/api/v1/users/" + props.id, qs.stringify(
@@ -68,27 +68,27 @@ export default function User(props) {
   // };
 
   return (
-    props.name ?
-      <React.Fragment>
-        <Container component="main">
-          <Typography component="h6" variant="h6">
-            Welcome, {name}!
-          </Typography>
+    // props.name ?
+    <React.Fragment>
+      <Container component="main">
+        <Typography component="h6" variant="h6">
+          Welcome, {name}!
+        </Typography>
 
-          {/* {props.organisation_id ?
+        {/* {props.organisation_id ?
             <Redirect to={"/user/organisation_id_" + props.organisation_id} /> :
             <Redirect to="/user/join" />
           } */}
 
-          <Route path={"/user/join"}>
-            <OrganisationList user={props} handleChange={props.handleLogin} />
-          </Route>
-          <Route path={"/user/organisation_id_" + props.organisation_id}>
-            <OrganisationCard user={props} handleChange={props.handleLogin} />
-          </Route>
-          {/* {!props.organisation_id ?
+        <Route path={"/user/join"}>
+          <OrganisationList user={props} handleChange={props.handleLogin} />
+        </Route>
+        <Route path={"/user/organisation_id_" + props.organisation_id}>
+          <OrganisationCard user={props} handleChange={props.handleLogin} />
+        </Route>
+        {/* {!props.organisation_id ?
           OrganisationsList() : <OrganisationCard organisation_data={organisationData} />} */}
-        </Container>
-      </React.Fragment > : null
+      </Container>
+    </React.Fragment >
   );
 }
