@@ -22,8 +22,9 @@ export default function SignInForm(props) {
       , { withCredentials: true }).then(response => {
         if (response.data.logged_in) {
           console.log("logged in");
-          props.handleLogin();
+          props.handleLogin(response.data.user);
           history.push("/user");
+          // return <Redirect to="/home" />
         } else {
           // not sure what to do yet
         }

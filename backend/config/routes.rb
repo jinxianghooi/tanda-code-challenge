@@ -9,7 +9,7 @@ Rails.application.routes.draw do
       post '/logout',   to: 'sessions#destroy'
       get '/logged_in', to: 'sessions#is_logged_in?'
 
-      resources :organisations, param: :name
+      resources :organisations
       resources :users
       resources :shifts # only: [:create, :destroy]
     end

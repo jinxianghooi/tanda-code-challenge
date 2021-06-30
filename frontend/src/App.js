@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import Home from "./components/Home";
 import SignInForm from "./components/SignInForm";
 import SignupForm from "./components/SignupForm";
-import User from "./components/User";
+import User from "./components/UserPage";
 import axios from "axios";
 
 
@@ -36,6 +36,15 @@ export default function App() {
     }
   });
 
+  // useEffect(async () => {
+  //   const response = await axios.get('/api/v1/logged_in', { withCredentials: true });
+  //   if (response.data.logged_in) {
+  //     handleLogin(response.data.user);
+  //   } else {
+  //     handleLogout();
+  //   }
+  // }, []);
+
   function handleLogin(data) {
     setSession({ isLoggedIn: true, user: data })
   }
@@ -47,14 +56,20 @@ export default function App() {
   function loginStatus() {
     axios.get('/api/v1/logged_in', { withCredentials: true })
       .then(response => {
+        console.log(response)
         if (response.data.logged_in) {
           handleLogin(response.data.user);
-          console.log(response.data.user)
         } else {
-          handleLogout(); //infinite loop tiggered because of this
+          handleLogout();
         }
-      }).catch(error => console.log('api errors', error))
+      }).catch(error => console.log('api errors: ', error))
   }
+
+  function postLogout(handleLogout) {
+    axios.post('/api/v1/logout', {});
+    handleLogout();
+    return <Redirect to="/" />
+  };
 
   // useEffect(() => {
   //   axios.get('/api/v1/users/1').then(res => setUserData(res.data))
@@ -71,24 +86,28 @@ export default function App() {
             <Typography variant="h6" className={classes.title}>
               ADNAT
             </Typography>
-            <Link to='signin'>
-              Sign in
+            <Link to={session.isLoggedIn ? "/signout" : "/signin"}>
+              {session.isLoggedIn ? "Sign out" : "Sign in"}
             </Link>
           </Toolbar>
         </AppBar>
 
         <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/signin" render={(props) => (
+          <Route path="/" exact >
+            {/* {session.isLoggedIn ? <Redirect to="/user" /> : <Home />} */}
+            <Home />
+          </Route>
+          <Route path="/signin">
             <SignInForm handleLogin={handleLogin}
               handleLogout={handleLogout} />
-          )} />
-          {<Route
-            path="/user"
-            render={(props) => (
-              <User {...session.user} />
-            )} />}
+          </Route>
+          <Route path="/user">
+            <User {...session.user} />
+          </Route>
           <Route path="/signup" component={SignupForm} />
+          <Route path="/signout" exact >
+            {() => postLogout(handleLogout)}
+          </Route>
         </Switch>
       </Router>
     </div>

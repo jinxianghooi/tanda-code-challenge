@@ -67,7 +67,7 @@ export default function SignupForm(props) {
             name="password confirmation"
             label="Password confirmation"
             type="password"
-            id="password"
+            id="password_confirmation"
             autoComplete="new-password"
             onChange={handleInputChange}
           // value={inputs.password}
