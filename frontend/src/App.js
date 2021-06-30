@@ -104,7 +104,9 @@ export default function App() {
           <Route path="/user">
             <User {...session.user} />
           </Route>
-          <Route path="/signup" component={SignupForm} />
+          <Route path="/signup">
+            <SignupForm handleLogin={handleLogin} />
+          </Route>
           <Route path="/signout" exact >
             {() => postLogout(handleLogout)}
           </Route>

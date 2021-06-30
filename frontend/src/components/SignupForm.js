@@ -1,18 +1,35 @@
 import React from "react";
 import SignInHook from "./CustomHooks";
 import { Container, Typography, TextField, Button, Grid, Link } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom"
+import { Link as RouterLink, useHistory } from "react-router-dom"
 import axios from "axios";
 
 export default function SignupForm(props) {
   // do axios stuff
   // add field validation
 
-  const postSignupData = () => {
-    // axios.post('/api/v1/')
-  };
+  const { inputs, handleInputChange, handleSubmit } = SignInHook(createNewUser);
+  const qs = require('qs');
+  const history = useHistory();
 
-  const { inputs, handleInputChange, handleSubmit } = SignInHook();
+  function createNewUser() {
+    axios.post('/api/v1/users', qs.stringify(
+      {
+        user: {
+          name: inputs.name,
+          email_address: inputs.email,
+          password: inputs.password
+        }
+      }), { withCredentials: true })
+      .then(response => {
+        if (response.data.status === "created") {
+          props.handleLogin(response.data.user);
+          history.push("/user");
+        } else {
+          // do error stuff here
+        }
+      }).catch(error => console.log('api errors:', error))
+  };
 
   return (
     <React.Fragment>

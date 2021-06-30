@@ -7,19 +7,19 @@ import axios from 'axios';
 
 export default function SignInForm(props) {
 
-  const { inputs, handleInputChange, handleSubmit } = SignInHook(handleChange);
+  const { inputs, handleInputChange, handleSubmit } = SignInHook(login);
   const qs = require('qs');
   const history = useHistory();
 
-  function handleChange() {
+  function login() {
     axios.post('/api/v1/login', qs.stringify(
       {
         user: {
           email_address: inputs.email,
           password: inputs.password
         }
-      })
-      , { withCredentials: true }).then(response => {
+      }), { withCredentials: true })
+      .then(response => {
         if (response.data.logged_in) {
           console.log("logged in");
           props.handleLogin(response.data.user);

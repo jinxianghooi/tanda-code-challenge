@@ -18,7 +18,10 @@ module Api
 
         if @user.save
           login!
-          render json: @user
+          render json: {
+            status: :created,
+            user: @user
+          }
         else
           render json: { error: user.errors.messages }, status: 500
         end
