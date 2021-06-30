@@ -1,55 +1,96 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { Container, Typography, List, ListItem, ListItemText, Button, Grid, Link } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom"
+import { Redirect, Route, useHistory } from "react-router-dom"
 import axios from "axios";
 import OrganisationCard from "./OrganisationCard";
+import OrganisationList from "./OrganisationList";
 
 export default function User(props) {
-  console.log(props);
   const name = props.name;
-  const [organisationData, setOrganisationData] = useState({});
+  const history = useHistory();
+  const hasFetchedData = useRef(false);
+
+  // useEffect(() => {
+  //   if (props.organisation_id) {
+  //     axios.get("/api/v1/organisations/" + props.organisation_id)
+  //       .then(res => setOrganisationData(res.data))
+  //   } else {
+  //     axios.get('/api/v1/organisations.json')
+  //       .then(res => setOrganisationData(res.data))
+  //   }
+  // }, [props.organisation_id, setOrganisationData]);
 
   useEffect(() => {
     if (props.organisation_id) {
-      axios.get("/api/v1/organisations/" + props.organisation_id)
-        .then(res => setOrganisationData(res.data))
+      history.push("/user/organisation_id_" + props.organisation_id);
     } else {
-      axios.get('/api/v1/organisations.json')
-        .then(res => setOrganisationData(res.data))
+      history.push("/user/join");
     }
-  }, [props.organisation_id, setOrganisationData]);
+    hasFetchedData.current = true;
+  }, [props.organisation_id, history])
 
-  const OrganisationsList = () => {
-    // const [organisationData, setOrganisationData] = useState({});
-    // axios.get('/api/v1/organisations.json').then(res => setOrganisationData(res.data))
+  // function updateUserDetails(organisation_id, organisation_name) {
+  //   axios.patch("/api/v1/users/" + props.id, qs.stringify(
+  //     {
+  //       user: {
+  //         organisation_id: organisation_id
+  //       }
+  //     }), { withCredentials: true })
+  //     .then(response => {
+  //       if (response.data.status === "updated") {
+  //         props.handleLogin(response.data.user);
+  //         history.push("/user/" + organisation_name);
+  //       } else {
+  //         // do error stuff here
+  //       }
+  //     }).catch(error => console.log('api errors:', error))
+  // };
 
-    return (
-      <List>{
-        organisationData.data ?
-          organisationData.data.map((organisation) =>
-            <ListItem key={organisation.attributes.name}>
-              <ListItemText primary={organisation.attributes.name} />
-              <RouterLink to={"/organisation/" + organisation.id}>Join</RouterLink>
-              <RouterLink>Edit</RouterLink>
-            </ListItem >) : null
-      }</List>
-    )
-  };
-
-
+  // const OrganisationsList = () => {
+  //   return (
+  //     <React.Fragment>
+  //       <Typography component="h4" variant="h4">
+  //         Organisations
+  //       </Typography>
+  //       <List>{
+  //         organisationData.data ?
+  //           organisationData.data.map((organisation) =>
+  //             <ListItem key={organisation.attributes.name}>
+  //               <ListItemText primary={organisation.attributes.name} />
+  //               <Button
+  //                 onClick={() => updateUserDetails(organisation.id, organisation.attributes.name)}>
+  //                 Join
+  //               </Button>
+  //               <div>&nbsp;</div>
+  //               <Button>Edit</Button>
+  //             </ListItem >) : null
+  //       }</List>
+  //     </React.Fragment>
+  //   )
+  // };
 
   return (
-    <React.Fragment>
-      <Container component="main">
-        <Typography component="h6" variant="h6">
-          Welcome, {name}!
-        </Typography>
-        <Typography component="h4" variant="h4">
-          Organisations
-        </Typography>
-        {props.organisation_id ?
-          <OrganisationCard /> : OrganisationsList()}
-      </Container>
-    </React.Fragment >
+    props.name ?
+      <React.Fragment>
+        <Container component="main">
+          <Typography component="h6" variant="h6">
+            Welcome, {name}!
+          </Typography>
+
+          {/* {props.organisation_id ?
+            <Redirect to={"/user/organisation_id_" + props.organisation_id} /> :
+            <Redirect to="/user/join" />
+          } */}
+
+          <Route path={"/user/join"}>
+            <OrganisationList user={props} />
+          </Route>
+          <Route path={"/user/organisation_id_" + props.organisation_id}>
+            <OrganisationCard />
+          </Route>
+          {/* {!props.organisation_id ?
+          OrganisationsList() : <OrganisationCard organisation_data={organisationData} />} */}
+        </Container>
+      </React.Fragment > : null
   );
 }

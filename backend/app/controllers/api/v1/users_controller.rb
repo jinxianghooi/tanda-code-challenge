@@ -28,10 +28,13 @@ module Api
       end
 
       def update
-        user = User.find_by(id: params[:id])
+        user = User.find(params[:id])
 
         if user.update(user_params)
-          render json: @user
+          render json: {
+            status: :updated,
+            user: @user
+          }
         else
           render json: { error: user.errors.messages }, status: 500
         end
@@ -50,7 +53,7 @@ module Api
       private
 
       def user_params
-        params.require(:user).permit(:name, :email_address, :password)
+        params.require(:user).permit(:name, :email_address, :password, :organisation_id)
       end
     end
   end
