@@ -35,7 +35,7 @@ module Api
       private
 
       def shift_params
-        params.require(:shift).permit(:start, :finish, :break_length, :user_id)
+        params.require(:shift).permit(:start, :finish, :break_length, :organisation_id, :user_id)
       end
     end
   end
