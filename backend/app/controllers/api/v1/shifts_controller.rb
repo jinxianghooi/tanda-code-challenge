@@ -1,6 +1,20 @@
 module Api
   module V1
     class ShiftsController < ApplicationController
+      def index
+        # not sure if this is the right way to do it but it works
+        if params[:organisation_id]
+          shifts = Shift.find_by(organisation_id: params[:organisation_id])
+        elsif params[:user_id]
+          Shift.find_by(user_id: params[:user_id]) 
+        else
+          render json: {
+						error: ['forbidden path']
+					}, status: 403
+        end
+        
+        render json: ShiftSerializer.new(shifts).serializable_hash.to_json
+
       def create
         shift = Shift.new(shift_params)
 
@@ -12,7 +26,7 @@ module Api
       end
 
       def update
-        shift = Shift.find_by(id: params[:id])
+        shift = Shift.find(params[:id])
 
         if shift.save
           render json: ShiftSerializer.new(shift).serializable_hash.to_json
@@ -23,7 +37,7 @@ module Api
       end
 
       def destroy
-        shift = Shift.find_by(id: params[:id])
+        shift = Shift.find(params[:id])
 
         if shift.destroy
           head :no_content

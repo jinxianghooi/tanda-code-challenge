@@ -9,11 +9,16 @@ Rails.application.routes.draw do
       post '/logout',   to: 'sessions#destroy'
       get '/logged_in', to: 'sessions#is_logged_in?'
 
-      resources :organisations
-      resources :users
-      resources :shifts # only: [:create, :destroy]
+      resources :organisations do
+        resources :shifts
+      end
+
+      resources :users do
+        resources :shifts
+      end
+      # resources :shifts # only: [:create, :destroy]
     end
   end
 
-  get '*path', to: 'pages#index', via: :all
+  # get '*path', to: 'pages#index', via: :all
 end
