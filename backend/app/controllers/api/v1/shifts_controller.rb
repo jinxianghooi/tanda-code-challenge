@@ -4,13 +4,15 @@ module Api
       def index
         # not sure if this is the right way to do it but it works
         if params[:organisation_id]
-          shifts = Shift.find_by(organisation_id: params[:organisation_id])
+          shifts = Shift.where(organisation_id: params[:organisation_id]).all
         elsif params[:user_id]
-          Shift.find_by(user_id: params[:user_id]) 
+          shifts = Shift.where(user_id: params[:user_id]).all
         else
           render json: {
 						error: ['forbidden path']
 					}, status: 403
+        # else
+        #   shifts = Shift.all 
         end
         
         render json: ShiftSerializer.new(shifts).serializable_hash.to_json

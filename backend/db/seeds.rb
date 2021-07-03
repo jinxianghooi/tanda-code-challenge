@@ -55,5 +55,12 @@ shifts = Shift.create([
     break_length: 60,
     user: users.first, 
     organisation: organisations.first
+  }, 
+  {
+    start: DateTime.new(2021, 5, 20, 9, 0, 0, '+10:00'),
+    finish: DateTime.new(2021, 5, 20, 21, 0, 0, '+10:00'),
+    break_length: 30,
+    user: users.first, 
+    organisation: organisations.first
   }
 ])

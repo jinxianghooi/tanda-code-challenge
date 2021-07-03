@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       resources :users do
         resources :shifts
       end
-      # resources :shifts # only: [:create, :destroy]
+      # resources :shifts
     end
   end
 

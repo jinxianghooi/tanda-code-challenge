@@ -5,7 +5,7 @@ import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-ro
 import Home from "./components/Home";
 import SignInForm from "./components/SignInForm";
 import SignupForm from "./components/SignupForm";
-import User from "./components/UserPage";
+import UserPage from "./components/UserPage";
 import axios from "axios";
 
 
@@ -76,42 +76,49 @@ export default function App() {
   // }, []);
 
   return (
-    <div>
-      <Router>
-        <AppBar position="static">
-          <Toolbar>
-            <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-              {/* <MenuIcon /> */}
-            </IconButton>
-            <Typography variant="h6" className={classes.title}>
-              ADNAT
-            </Typography>
-            <Link to={session.isLoggedIn ? "/signout" : "/signin"}>
-              {session.isLoggedIn ? "Sign out" : "Sign in"}
-            </Link>
-          </Toolbar>
-        </AppBar>
+    hasFetchedData.current ?
+      <div>
+        <Router>
+          <AppBar position="static">
+            <Toolbar>
+              <Typography variant="h6" className={classes.title}>
+                ADNAT
+              </Typography>
+              {/* {session.isLoggedIn ?
+                <div>
+                  <Typography>
+                    Logged in as
+                  </Typography>
+                  <Link to="/user"> {session.user.name} </Link>
+                </div> : null} */}
+              <Link to={session.isLoggedIn ? "/signout" : "/signin"}>
+                {session.isLoggedIn ? "Sign out" : "Sign in"}
+              </Link>
+            </Toolbar>
+          </AppBar>
 
-        <Switch>
-          <Route path="/" exact >
-            {/* {session.isLoggedIn ? <Redirect to="/user" /> : <Home />} */}
-            <Home />
-          </Route>
-          <Route path="/signin">
-            <SignInForm handleLogin={handleLogin}
-              handleLogout={handleLogout} />
-          </Route>
-          <Route path="/user">
-            <User {...session.user} handleLogin={handleLogin} />
-          </Route>
-          <Route path="/signup">
-            <SignupForm handleLogin={handleLogin} />
-          </Route>
-          <Route path="/signout" exact >
-            {() => postLogout(handleLogout)}
-          </Route>
-        </Switch>
-      </Router>
-    </div>
+          <Switch>
+            <Route path="/" exact >
+              {session.isLoggedIn ? <Redirect to="/user" /> : <Home />}
+              <Home />
+            </Route>
+            <Route path="/signin">
+              <SignInForm handleLogin={handleLogin}
+                handleLogout={handleLogout} />
+            </Route>
+            <Route path="/user">
+              {session.isLoggedIn ?
+                <UserPage {...session.user} handleLogin={handleLogin} />
+                : <Redirect to="/signin" />}
+            </Route>
+            <Route path="/signup">
+              <SignupForm handleLogin={handleLogin} />
+            </Route>
+            <Route path="/signout" exact >
+              {() => postLogout(handleLogout)}
+            </Route>
+          </Switch>
+        </Router>
+      </div> : null
   );
 }

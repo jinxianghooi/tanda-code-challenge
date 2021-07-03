@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useRef } from "react";
 import { Container, Typography, List, ListItem, ListItemText, Button, Grid, Link } from "@material-ui/core";
-import { Redirect, Route, useHistory } from "react-router-dom"
+import { Redirect, Route, useHistory, useLocation } from "react-router-dom"
 import axios from "axios";
 import OrganisationCard from "./OrganisationCard";
 import OrganisationList from "./OrganisationList";
 
-export default function User(props) {
-  const name = props.name;
+export default function UserPage(props) {
+  // let location = useLocation();
   const history = useHistory();
 
   // useEffect(() => {
@@ -20,12 +20,16 @@ export default function User(props) {
   // }, [props.organisation_id, setOrganisationData]);
 
   useEffect(() => {
+    redirect();
+  })
+
+  function redirect() {
     if (props.organisation_id) {
       history.push("/user/organisation_id_" + props.organisation_id);
     } else {
       history.push("/user/join");
     }
-  }, [props.organisation_id, history])
+  };
 
   // function updateUserDetails(organisation_id, organisation_name) {
   //   axios.patch("/api/v1/users/" + props.id, qs.stringify(
@@ -72,7 +76,7 @@ export default function User(props) {
     <React.Fragment>
       <Container component="main">
         <Typography component="h6" variant="h6">
-          Welcome, {name}!
+          Welcome, {props.name}!
         </Typography>
 
         {/* {props.organisation_id ?

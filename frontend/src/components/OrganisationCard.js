@@ -55,7 +55,7 @@ export default function OrganisationCard(props) {
 				</Button>
 
 				<Route path={"/user/organisation_id_" + organisation.id + "/shifts"}>
-					<Shifts />
+					<Shifts organisation={organisation} />
 				</Route>
 				<Route path={"/user/organisation_id_" + organisation.id + "/edit"}>
 					<OrganisationEdit />
