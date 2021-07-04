@@ -1,16 +1,28 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { DataGrid } from '@material-ui/data-grid';
 import { Button } from "@material-ui/core";
+import { useHistory } from "react-router-dom";
 
 export default function Shifts(props) {
 
   // TODO: get employeeName from shifts api instead of looking through entire userbase
   // TODO: fix date
+  const qs = require('qs');
+  const history = useHistory();
 
   const [shiftData, setShiftData] = useState({});
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+  const initialNewShiftRow = {
+    id: 0,
+    employeeName: props.user.name,
+    shiftDate: new Date(),
+    start: "",
+    finish: "",
+    break: ""
+  };
+  const [newShiftRow, setNewShiftRow] = useState(initialNewShiftRow);
 
   useEffect(() => {
     axios.get("/api/v1/organisations/" + props.organisation.id + "/shifts.json")
@@ -19,17 +31,15 @@ export default function Shifts(props) {
       .then(response => setUserData(response.data));
   }, [props.organisation.id]);
 
-  console.log(userData);
-
   // DataGrid stuff
   const columns = [
-    { field: "employeeName", headerName: "Employee name", flex: 1.2, editable: false },
-    { field: "shiftDate", headerName: "Shift date", type: "date", flex: 1, editable: false },
-    { field: "start", headerName: "Start time", type: "string", flex: 1, editable: false },
-    { field: "finish", headerName: "End time", type: "string", flex: 1, editable: false },
-    { field: "break", headerName: "Break length (minutes)", type: "string", flex: 1.2, editable: false },
-    { field: "hours", headerName: "Hours worked", type: "string", flex: 1, editable: false },
-    { field: "cost", headerName: "Shift cost", type: "string", flex: 0.9, editable: false },
+    { field: "employeeName", headerName: "Employee name", flex: 1.2, editable: true },
+    { field: "shiftDate", headerName: "Shift date", type: "date", flex: 1, editable: true },
+    { field: "start", headerName: "Start time", type: "string", flex: 1, editable: true },
+    { field: "finish", headerName: "End time", type: "string", flex: 1, editable: true },
+    { field: "break", headerName: "Break length (minutes)", type: "string", flex: 1.2, editable: true },
+    { field: "hours", headerName: "Hours worked", type: "string", flex: 1, editable: true },
+    { field: "cost", headerName: "Shift cost", type: "string", flex: 0.9, editable: true },
   ];
 
   const generateRows = () =>
@@ -55,24 +65,18 @@ export default function Shifts(props) {
       }
     });
 
-  const editRow = () => {
-    return {
-      id: 0,
-      employeeName: props.user.name,
-      shiftDate: "",
-      start: "",
-      finish: "",
-      break: ""
-    }
-  };
-
   const newShiftButton = () =>
     <React.Fragment>
       <Button
         variant="contained"
         color="primary"
         style={{ margin: "10px" }}
-        onClick={() => setIsEditing(!isEditing)}
+        onClick={() => {
+          if (isEditing) {
+            postShift();
+          }
+          setIsEditing(!isEditing);
+        }}
       >
         {isEditing ? "Save" : "New Shift"}
       </Button>
@@ -87,10 +91,70 @@ export default function Shifts(props) {
         </Button> : null}
     </React.Fragment>
 
+  const handleEditCellChangeCommitted = useCallback(
+    ({ id, field, props }) => {
+      switch (field) {
+        case "employeeName":
+          setNewShiftRow({ ...newShiftRow, employeeName: props.value, })
+          break;
+
+        case "shiftDate":
+          setNewShiftRow({ ...newShiftRow, shiftDate: props.value, })
+          break;
+
+        case "start":
+          setNewShiftRow({ ...newShiftRow, start: props.value, })
+          break;
+
+        case "finish":
+          setNewShiftRow({ ...newShiftRow, finish: props.value, })
+          break;
+
+        case "break":
+          setNewShiftRow({ ...newShiftRow, break: props.value, })
+          break;
+
+        default:
+          return;
+      }
+    }, [newShiftRow],
+  );
+
+  function postShift() {
+    axios.post("/api/v1/shifts", qs.stringify(
+      {
+        shift: {
+          start: string2ISODateString(newShiftRow.shiftDate, newShiftRow.start),
+          finish: string2ISODateString(newShiftRow.shiftDate, newShiftRow.finish),
+          break_length: parseInt(newShiftRow.break),
+          organisation_id: parseInt(props.organisation.id),
+          user_id: props.user.id
+        }
+      }), { withCredentials: true })
+      .then(response => {
+        setShiftData({
+          "data": [
+            ...shiftData.data,
+            response.data.data
+          ]
+        });
+        setNewShiftRow(initialNewShiftRow);
+      })
+  };
+
+  function string2ISODateString(date, time) {
+    const splitDate = [date.getDate(), date.getMonth(), date.getFullYear()];
+    const splitTime = time.split(":");
+
+    const dateObject = new Date(
+      splitDate[2], splitDate[1],
+      splitDate[0], parseInt(splitTime[0]), parseInt(splitTime[1]));
+
+    return dateObject.toISOString();
+  };
 
   function parseDate(dateTimeString) {
-    const date = new Date(dateTimeString);
-    console.log(date.toString());
+    // const date = new Date(dateTimeString);
     return new Date(dateTimeString);
   };
 
@@ -109,14 +173,17 @@ export default function Shifts(props) {
     return hours_worked * rate;
   };
 
+
   return (
     <div style={{ height: 400, width: '100%' }}>
       <div style={{ display: 'flex', height: '100%' }}>
         <div style={{ flexGrow: 1 }}>
           {userData && shiftData.data ?
             <DataGrid
-              rows={isEditing ? [...generateRows(), editRow()] : generateRows()}
+              rows={isEditing ? [...generateRows(), newShiftRow] : generateRows()}
               columns={columns}
+              isCellEditable={(params) => params.row.id === 0}
+              onEditCellChangeCommitted={handleEditCellChangeCommitted}
               components={{
                 Footer: newShiftButton,
               }}
