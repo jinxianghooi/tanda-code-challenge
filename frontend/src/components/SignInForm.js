@@ -7,7 +7,7 @@ import axios from 'axios';
 
 export default function SignInForm(props) {
 
-  const { inputs, handleInputChange, handleSubmit } = SignInHook(login);
+  const { inputs, handleInputChange, handleSubmit } = SignInHook(login, {});
   const qs = require('qs');
   const history = useHistory();
 

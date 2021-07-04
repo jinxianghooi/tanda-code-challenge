@@ -17,17 +17,17 @@ module Api
         organisation = Organisation.new(organisation_params)
 
         if organisation.save
-          render json: OrganisationSerializer.new(organisations).serializable_hash.to_json
+          render json: OrganisationSerializer.new(organisation).serializable_hash.to_json
         else
           render json: { error: organisation.errors.messages }, status: 422
         end
       end
 
       def update
-        organisation = Organisation.find_by(id: params[:id])
+        organisation = Organisation.find(params[:id])
 
         if organisation.update(organisation_params)
-          render json: OrganisationSerializer.new(organisations).serializable_hash.to_json
+          render json: OrganisationSerializer.new(organisation).serializable_hash.to_json
         else
           render json: { error: organisation.errors.messages }, status: 422
         end

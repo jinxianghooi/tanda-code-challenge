@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-const SignInHook = (callback) => {
-  const [inputs, setInputs] = useState({});
+const SignInHook = (callback, initialValue) => {
+  const [inputs, setInputs] = useState(initialValue);
 
   const handleSubmit = (event) => {
     if (event) {
@@ -11,6 +11,7 @@ const SignInHook = (callback) => {
   }
 
   const handleInputChange = (event) => {
+    console.log(inputs)
     event.persist();
     setInputs(inputs => ({
       ...inputs,

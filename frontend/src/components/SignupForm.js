@@ -8,7 +8,7 @@ export default function SignupForm(props) {
   // do axios stuff
   // add field validation
 
-  const { inputs, handleInputChange, handleSubmit } = SignInHook(createNewUser);
+  const { inputs, handleInputChange, handleSubmit } = SignInHook(createNewUser, {});
   const qs = require('qs');
   const history = useHistory();
 

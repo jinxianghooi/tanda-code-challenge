@@ -61,7 +61,7 @@ export default function Shifts(props) {
         finish: parseTime(shift.attributes.finish),
         break: shift.attributes.break_length,
         hours: hours_worked,
-        cost: cost
+        cost: "$" + cost
       }
     });
 
@@ -175,13 +175,14 @@ export default function Shifts(props) {
 
 
   return (
-    <div style={{ height: 400, width: '100%' }}>
+    <div style={{ height: 200, width: '100%' }}>
       <div style={{ display: 'flex', height: '100%' }}>
         <div style={{ flexGrow: 1 }}>
           {userData && shiftData.data ?
             <DataGrid
               rows={isEditing ? [...generateRows(), newShiftRow] : generateRows()}
               columns={columns}
+              autoHeight
               isCellEditable={(params) => params.row.id === 0}
               onEditCellChangeCommitted={handleEditCellChangeCommitted}
               components={{

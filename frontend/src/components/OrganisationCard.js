@@ -58,7 +58,7 @@ export default function OrganisationCard(props) {
 					<Shifts user={props.user} organisation={organisation} />
 				</Route>
 				<Route path={"/user/organisation_id_" + organisation.id + "/edit"}>
-					<OrganisationEdit />
+					<OrganisationEdit organisation={organisation} />
 				</Route>
 			</React.Fragment > : null
 	)
