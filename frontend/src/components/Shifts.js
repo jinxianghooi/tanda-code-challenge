@@ -1,13 +1,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { DataGrid } from '@material-ui/data-grid';
+import { Button } from "@material-ui/core";
 
 export default function Shifts(props) {
 
   // TODO: get employeeName from shifts api instead of looking through entire userbase
+  // TODO: fix date
 
   const [shiftData, setShiftData] = useState({});
-  const [userData, setUserData] = useState({});
+  const [userData, setUserData] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     axios.get("/api/v1/organisations/" + props.organisation.id + "/shifts.json")
@@ -52,18 +55,42 @@ export default function Shifts(props) {
       }
     });
 
-  // const editRow = () => {
-  //   return {
-  //     id: 5,
-  //     employeeName: "",
-  //     shiftDate: "",
-  //     start: "",
-  //     finish: "",
-  //     break: ""
-  //   }
-  // };
+  const editRow = () => {
+    return {
+      id: 0,
+      employeeName: props.user.name,
+      shiftDate: "",
+      start: "",
+      finish: "",
+      break: ""
+    }
+  };
+
+  const newShiftButton = () =>
+    <React.Fragment>
+      <Button
+        variant="contained"
+        color="primary"
+        style={{ margin: "10px" }}
+        onClick={() => setIsEditing(!isEditing)}
+      >
+        {isEditing ? "Save" : "New Shift"}
+      </Button>
+      {isEditing ?
+        <Button
+          variant="contained"
+          color="secondary"
+          style={{ margin: "10px 0px " }}
+          onClick={() => setIsEditing(false)}
+        >
+          Cancel
+        </Button> : null}
+    </React.Fragment>
+
 
   function parseDate(dateTimeString) {
+    const date = new Date(dateTimeString);
+    console.log(date.toString());
     return new Date(dateTimeString);
   };
 
@@ -86,7 +113,14 @@ export default function Shifts(props) {
     <div style={{ height: 400, width: '100%' }}>
       <div style={{ display: 'flex', height: '100%' }}>
         <div style={{ flexGrow: 1 }}>
-          {shiftData.data ? <DataGrid rows={generateRows()} columns={columns} /> : null}
+          {userData && shiftData.data ?
+            <DataGrid
+              rows={isEditing ? [...generateRows(), editRow()] : generateRows()}
+              columns={columns}
+              components={{
+                Footer: newShiftButton,
+              }}
+            /> : null}
         </div>
       </div>
     </div>
