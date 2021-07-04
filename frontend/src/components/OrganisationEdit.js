@@ -25,7 +25,7 @@ export default function OrganisationEdit(props) {
         }
       }), { withCredentials: true })
       .then(response => {
-        history.push("/user");
+        history.push("/");
       }).catch(error => console.log('api errors:', error))
   };
 
