@@ -1,6 +1,15 @@
 module Api
   module V1
     class UsersController < ApplicationController
+      def index
+        @users = User.all()
+
+        if @users
+          render json: @users
+        else
+          render json: { error: "No users found" }, status: 500
+        end
+      end
       def show
         # user = User.find_by(id: params[:id])
         # render json: UserSerializer.new(user).serializable_hash.to_json
@@ -9,7 +18,7 @@ module Api
         if @user
           render json: @user
         else
-          render json: { error: user.errors.messages }, status: 500
+          render json: { error: "User not found" }, status: 500
         end
 
       end

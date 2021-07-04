@@ -4,12 +4,19 @@ import { DataGrid } from '@material-ui/data-grid';
 
 export default function Shifts(props) {
 
+  // TODO: get employeeName from shifts api instead of looking through entire userbase
+
   const [shiftData, setShiftData] = useState({});
+  const [userData, setUserData] = useState({});
 
   useEffect(() => {
     axios.get("/api/v1/organisations/" + props.organisation.id + "/shifts.json")
-      .then(response => setShiftData(response.data))
+      .then(response => setShiftData(response.data));
+    axios.get("/api/v1/users.json")
+      .then(response => setUserData(response.data));
   }, [props.organisation.id]);
+
+  console.log(userData);
 
   // DataGrid stuff
   const columns = [
@@ -34,8 +41,8 @@ export default function Shifts(props) {
         props.organisation.attributes.hourly_rate)
 
       return {
-        id: index,
-        employeeName: shift.attributes.user_id,
+        id: index + 1,
+        employeeName: userData.filter((user) => { return user.id === shift.attributes.user_id })[0].name,
         shiftDate: parseDate(shift.attributes.start),
         start: parseTime(shift.attributes.start),
         finish: parseTime(shift.attributes.finish),
@@ -44,6 +51,17 @@ export default function Shifts(props) {
         cost: cost
       }
     });
+
+  // const editRow = () => {
+  //   return {
+  //     id: 5,
+  //     employeeName: "",
+  //     shiftDate: "",
+  //     start: "",
+  //     finish: "",
+  //     break: ""
+  //   }
+  // };
 
   function parseDate(dateTimeString) {
     return new Date(dateTimeString);

@@ -11,6 +11,7 @@ module Api
           render json: {
 						error: ['forbidden path']
 					}, status: 403
+          return;
         # else
         #   shifts = Shift.all 
         end
