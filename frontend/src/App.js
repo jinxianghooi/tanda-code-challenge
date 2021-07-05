@@ -100,7 +100,6 @@ export default function App() {
           <Switch>
             <Route path="/" exact >
               {session.isLoggedIn ? <Redirect to="/user" /> : <Home />}
-              <Home />
             </Route>
             <Route path="/signin">
               <SignInForm handleLogin={handleLogin}

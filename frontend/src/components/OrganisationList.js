@@ -2,9 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Typography, Button, List, ListItem, ListItemText } from '@material-ui/core';
 import axios from 'axios';
 import { Redirect, useHistory } from 'react-router-dom';
+import OrganisationEdit from './OrganisationEdit';
 
 export default function OrganisationList(props) {
   const [organisationData, setOrganisationData] = useState({});
+  const [editOrganisation, setEditOrganisation] = useState(null);
   const qs = require('qs')
   const history = useHistory();
 
@@ -39,15 +41,28 @@ export default function OrganisationList(props) {
       <List>{
         organisationData.data ?
           organisationData.data.map((organisation) =>
-            <ListItem key={organisation.attributes.name}>
-              <ListItemText primary={organisation.attributes.name} />
-              <Button
-                onClick={() => updateUserDetails(organisation.id, organisation.attributes.name)}>
-                Join
-              </Button>
-              <div>&nbsp;</div>
-              <Button>Edit</Button>
-            </ListItem >) : null
+            <React.Fragment>
+              <ListItem key={organisation.attributes.name}>
+                <ListItemText primary={organisation.attributes.name} />
+                <Button
+                  style={{ "margin": "2px" }}
+                  onClick={() => updateUserDetails(organisation.id, organisation.attributes.name)}
+                >
+                  Join
+                </Button>
+                <Button
+                  style={{ "margin": "2px" }}
+                  onClick={() => setEditOrganisation(organisation.id)}
+                >
+                  Edit
+                </Button>
+              </ListItem >
+
+              {organisation.id === editOrganisation ?
+                <ListItem key={organisation.attributes.name + "Edit"}>
+                  <OrganisationEdit organisation={organisation} />
+                </ListItem> : null}
+            </React.Fragment>) : null
       }</List>
     </React.Fragment>
   );

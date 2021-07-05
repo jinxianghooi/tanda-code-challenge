@@ -6,18 +6,7 @@ import OrganisationCard from "./OrganisationCard";
 import OrganisationList from "./OrganisationList";
 
 export default function UserPage(props) {
-  // let location = useLocation();
   const history = useHistory();
-
-  // useEffect(() => {
-  //   if (props.organisation_id) {
-  //     axios.get("/api/v1/organisations/" + props.organisation_id)
-  //       .then(res => setOrganisationData(res.data))
-  //   } else {
-  //     axios.get('/api/v1/organisations.json')
-  //       .then(res => setOrganisationData(res.data))
-  //   }
-  // }, [props.organisation_id, setOrganisationData]);
 
   useEffect(() => {
     redirect();
@@ -31,58 +20,13 @@ export default function UserPage(props) {
     }
   };
 
-  // function updateUserDetails(organisation_id, organisation_name) {
-  //   axios.patch("/api/v1/users/" + props.id, qs.stringify(
-  //     {
-  //       user: {
-  //         organisation_id: organisation_id
-  //       }
-  //     }), { withCredentials: true })
-  //     .then(response => {
-  //       if (response.data.status === "updated") {
-  //         props.handleLogin(response.data.user);
-  //         history.push("/user/" + organisation_name);
-  //       } else {
-  //         // do error stuff here
-  //       }
-  //     }).catch(error => console.log('api errors:', error))
-  // };
-
-  // const OrganisationsList = () => {
-  //   return (
-  //     <React.Fragment>
-  //       <Typography component="h4" variant="h4">
-  //         Organisations
-  //       </Typography>
-  //       <List>{
-  //         organisationData.data ?
-  //           organisationData.data.map((organisation) =>
-  //             <ListItem key={organisation.attributes.name}>
-  //               <ListItemText primary={organisation.attributes.name} />
-  //               <Button
-  //                 onClick={() => updateUserDetails(organisation.id, organisation.attributes.name)}>
-  //                 Join
-  //               </Button>
-  //               <div>&nbsp;</div>
-  //               <Button>Edit</Button>
-  //             </ListItem >) : null
-  //       }</List>
-  //     </React.Fragment>
-  //   )
-  // };
-
   return (
-    // props.name ?
+
     <React.Fragment>
       <Container component="main">
         <Typography component="h6" variant="h6">
           Welcome, {props.name}!
         </Typography>
-
-        {/* {props.organisation_id ?
-            <Redirect to={"/user/organisation_id_" + props.organisation_id} /> :
-            <Redirect to="/user/join" />
-          } */}
 
         <Route path={"/user/join"}>
           <OrganisationList user={props} handleChange={props.handleLogin} />
@@ -90,8 +34,6 @@ export default function UserPage(props) {
         <Route path={"/user/organisation_id_" + props.organisation_id}>
           <OrganisationCard user={props} handleChange={props.handleLogin} />
         </Route>
-        {/* {!props.organisation_id ?
-          OrganisationsList() : <OrganisationCard organisation_data={organisationData} />} */}
       </Container>
     </React.Fragment >
   );

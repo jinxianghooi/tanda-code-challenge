@@ -57,8 +57,18 @@ export default function OrganisationEdit(props) {
       <Button
         type="submit"
         variant="contained"
-        color="primary" >
+        color="primary"
+        style={{ "margin": "4px" }}
+      >
         Update
+      </Button>
+      <Button
+        variant="contained"
+        color="secondary"
+        style={{ "margin": "4px" }}
+        onClick={() => history.push("/")}
+      >
+        Cancel
       </Button>
     </form>
   )
