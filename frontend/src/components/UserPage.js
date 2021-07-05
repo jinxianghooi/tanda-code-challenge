@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { Container, Typography, List, ListItem, ListItemText, Button, Grid, Link } from "@material-ui/core";
 import { Redirect, Route, useHistory, useLocation } from "react-router-dom"
 import axios from "axios";
-import OrganisationCard from "./OrganisationCard";
+import OrganisationPage from "./OrganisationPage";
 import OrganisationList from "./OrganisationList";
 
 export default function UserPage(props) {
@@ -32,7 +32,7 @@ export default function UserPage(props) {
           <OrganisationList user={props} handleChange={props.handleLogin} />
         </Route>
         <Route path={"/user/organisation_id_" + props.organisation_id}>
-          <OrganisationCard user={props} handleChange={props.handleLogin} />
+          <OrganisationPage user={props} handleChange={props.handleLogin} />
         </Route>
       </Container>
     </React.Fragment >

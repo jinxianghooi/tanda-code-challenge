@@ -1,12 +1,12 @@
 import React from "react";
 import { Container, Typography, TextField, Button, Grid, Link } from "@material-ui/core";
 import { Link as RouterLink, Redirect, useHistory } from "react-router-dom"
-import SignInHook from './CustomHooks';
+import FormHook from './CustomHooks';
 import axios from 'axios';
 
 export default function OrganisationEdit(props) {
   const { inputs, handleInputChange, handleSubmit }
-    = SignInHook(updateOrganisationData,
+    = FormHook(updateOrganisationData,
       {
         organisation_name: props.organisation.attributes.name,
         hourly_rate: props.organisation.attributes.hourly_rate

@@ -91,9 +91,12 @@ export default function App() {
                   </Typography>
                   <Link to="/user"> {session.user.name} </Link>
                 </div> : null} */}
-              <Link to={session.isLoggedIn ? "/signout" : "/signin"}>
+              <Button
+                component={Link}
+                to={session.isLoggedIn ? "/signout" : "/signin"}
+              >
                 {session.isLoggedIn ? "Sign out" : "Sign in"}
-              </Link>
+              </Button>
             </Toolbar>
           </AppBar>
 

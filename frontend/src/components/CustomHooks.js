@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SignInHook = (callback, initialValue) => {
+const FormHook = (callback, initialValue) => {
   const [inputs, setInputs] = useState(initialValue);
 
   const handleSubmit = (event) => {
@@ -26,4 +26,4 @@ const SignInHook = (callback, initialValue) => {
   };
 }
 
-export default SignInHook;
+export default FormHook;

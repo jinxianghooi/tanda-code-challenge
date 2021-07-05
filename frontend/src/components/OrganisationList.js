@@ -3,6 +3,7 @@ import { Typography, Button, List, ListItem, ListItemText } from '@material-ui/c
 import axios from 'axios';
 import { Redirect, useHistory } from 'react-router-dom';
 import OrganisationEdit from './OrganisationEdit';
+import OrganisationCreate from './OrganisationCreate';
 
 export default function OrganisationList(props) {
   const [organisationData, setOrganisationData] = useState({});
@@ -38,6 +39,7 @@ export default function OrganisationList(props) {
       <Typography component="h4" variant="h4">
         Organisations
       </Typography>
+
       <List>{
         organisationData.data ?
           organisationData.data.map((organisation) =>
@@ -64,6 +66,8 @@ export default function OrganisationList(props) {
                 </ListItem> : null}
             </React.Fragment>) : null
       }</List>
+
+      <OrganisationCreate />
     </React.Fragment>
   );
 }

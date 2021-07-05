@@ -1,13 +1,13 @@
 import React from 'react'
 import { Container, Typography, TextField, Button, Grid, Link } from "@material-ui/core";
 import { Link as RouterLink, Redirect, useHistory } from "react-router-dom"
-import SignInHook from './CustomHooks';
+import FormHook from './CustomHooks';
 import axios from 'axios';
 
 
 export default function SignInForm(props) {
 
-  const { inputs, handleInputChange, handleSubmit } = SignInHook(login, {});
+  const { inputs, handleInputChange, handleSubmit } = FormHook(login, {});
   const qs = require('qs');
   const history = useHistory();
 

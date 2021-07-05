@@ -1,5 +1,5 @@
 import React from "react";
-import SignInHook from "./CustomHooks";
+import FormHook from "./CustomHooks";
 import { Container, Typography, TextField, Button, Grid, Link } from "@material-ui/core";
 import { Link as RouterLink, useHistory } from "react-router-dom"
 import axios from "axios";
@@ -8,7 +8,7 @@ export default function SignupForm(props) {
   // do axios stuff
   // add field validation
 
-  const { inputs, handleInputChange, handleSubmit } = SignInHook(createNewUser, {});
+  const { inputs, handleInputChange, handleSubmit } = FormHook(createNewUser, {});
   const qs = require('qs');
   const history = useHistory();
 
