@@ -8,16 +8,16 @@
 
 organisations = Organisation.create([
   {
+    name: "Bob's Burgers",
+    hourly_rate: 20
+  },
+  {
     name: "Moe's Tavern",
     hourly_rate: 30
   },
   {
     name: "Sally's Sandwiches",
     hourly_rate: 40
-  },
-  {
-    name: "Bob's Burgers",
-    hourly_rate: 20
   }
 ])
 
@@ -32,13 +32,19 @@ users = User.create([
     name: "John Appleseed",
     email_address: "johnappleseed@gmail.com",
     password: "abcdef",
-    organisation: organisations.first
+    organisation: organisations[1]
   },
   {
     name: "Jane Brown",
     email_address: "janebrown@gmail.com",
     password: "123abc",
-    organisation: organisations[1]
+    organisation: organisations.first
+  },
+  {
+    name: "Ellen Jones",
+    email_address: "ellenjones@gmail.com",
+    password: "123abc",
+    organisation: organisations.first
   },
   {
     name: "Oliver Smith",
@@ -50,17 +56,24 @@ users = User.create([
 
 shifts = Shift.create([
   {
-    start: DateTime.new(2021, 5, 10, 9, 0, 0, '+10:00'),
-    finish: DateTime.new(2021, 5, 10, 21, 0, 0, '+10:00'),
-    break_length: 60,
+    start: DateTime.new(2019, 2, 7, 10, 15, 0, '+10:00'),
+    finish: DateTime.new(2019, 2, 7, 13, 30, 0, '+10:00'),
+    break_length: 0,
+    user: users[2], 
+    organisation: organisations.first
+  }, 
+  {
+    start: DateTime.new(2019, 2, 5, 9, 0, 0, '+10:00'),
+    finish: DateTime.new(2019, 2, 5, 13, 00, 0, '+10:00'),
+    break_length: 30,
     user: users.first, 
     organisation: organisations.first
   }, 
   {
-    start: DateTime.new(2021, 5, 20, 9, 0, 0, '+10:00'),
-    finish: DateTime.new(2021, 5, 20, 21, 0, 0, '+10:00'),
-    break_length: 30,
-    user: users.first, 
+    start: DateTime.new(2019, 1, 31, 11, 0, 0, '+10:00'),
+    finish: DateTime.new(2019, 1, 31, 23, 00, 0, '+10:00'),
+    break_length: 60,
+    user: users[3], 
     organisation: organisations.first
   }
 ])
