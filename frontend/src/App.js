@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { Typography, AppBar, Toolbar, IconButton, Button } from "@material-ui/core";
+import { Typography, AppBar, Toolbar, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { BrowserRouter as Router, Switch, Route, Link, Redirect } from "react-router-dom";
 import Home from "./components/Home";
