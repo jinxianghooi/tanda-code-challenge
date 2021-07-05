@@ -17,7 +17,7 @@ export default function Shifts(props) {
   const initialNewShiftRow = {
     id: 0,
     employeeName: props.user.name,
-    shiftDate: new Date(),
+    shiftDate: new Date().toLocaleDateString("en-AU"),
     start: "",
     finish: "",
     break: ""
@@ -154,8 +154,8 @@ export default function Shifts(props) {
   };
 
   function parseDate(dateTimeString) {
-    // const date = new Date(dateTimeString);
-    return new Date(dateTimeString);
+    const date = new Date(dateTimeString);
+    return date.toLocaleDateString("en-AU");
   };
 
   function parseTime(dateTimeString) {
