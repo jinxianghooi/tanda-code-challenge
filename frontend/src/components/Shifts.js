@@ -2,14 +2,12 @@ import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { DataGrid } from '@material-ui/data-grid';
 import { Button } from "@material-ui/core";
-import { useHistory } from "react-router-dom";
 
 export default function Shifts(props) {
 
   // TODO: get employeeName from shifts api instead of looking through entire userbase
   // TODO: fix date
   const qs = require('qs');
-  const history = useHistory();
 
   const [shiftData, setShiftData] = useState({});
   const [userData, setUserData] = useState(null);

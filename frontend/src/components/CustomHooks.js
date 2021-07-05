@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const FormHook = (callback, initialValue) => {
   const [inputs, setInputs] = useState(initialValue);
