@@ -12,6 +12,7 @@ cd tanda-code-challenge
 ```bash
 cd ruby_environment
 docker compose run --rm --service-ports ruby_dev
+# Run in docker container
 bundle update && bundle install
 rails server -p $PORT -b 0.0.0.0
 ```
@@ -39,6 +40,11 @@ cd tanda-code-challenge
 docker compose run backend rake db:create
 docker compose run backend rake db:migrate
 docker compose run backend rake db:seed
+```
+
+## Cleanup
+```bash
+docker compose down
 ```
 
 
