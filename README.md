@@ -15,6 +15,12 @@ docker compose run --rm --service-ports ruby_dev
 bundle update && bundle install
 rails server -p $PORT -b 0.0.0.0
 ```
+If this is the first time running the dev environment, create the database:
+```bash
+rails db:create
+rails db:migrate
+rails db:seed
+```
 on a new terminal:
 ```bash
 cd tanda-code-challenge/frontend
