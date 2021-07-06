@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom"
 import axios from "axios";
 import FormHook from "./CustomHooks";
 
+const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : "http://0.0.0.0:3001"
+
 export default function OrganisationCreate(props) {
   const { inputs, handleInputChange, handleSubmit }
     = FormHook(updateOrganisationData,
@@ -11,10 +13,12 @@ export default function OrganisationCreate(props) {
   const qs = require('qs');
   const history = useHistory();
 
+  console.log(baseURL);
+
   function updateOrganisationData() {
     console.log(inputs.organisation_name);
     console.log(inputs.hourly_rate);
-    axios.post("/api/v1/organisations/", qs.stringify(
+    axios.post(baseURL + "/api/v1/organisations/", qs.stringify(
       {
         organisation: {
           name: inputs.organisation_name,

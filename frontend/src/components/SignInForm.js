@@ -4,6 +4,7 @@ import { Link as RouterLink, useHistory } from "react-router-dom"
 import FormHook from './CustomHooks';
 import axios from 'axios';
 
+const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : ""
 
 export default function SignInForm(props) {
 
@@ -12,7 +13,7 @@ export default function SignInForm(props) {
   const history = useHistory();
 
   function login() {
-    axios.post('/api/v1/login', qs.stringify(
+    axios.post(baseURL + '/api/v1/login', qs.stringify(
       {
         user: {
           email_address: inputs.email,

@@ -5,18 +5,20 @@ import { Link as RouterLink, Route, useHistory } from "react-router-dom"
 import Shifts from './Shifts';
 import OrganisationEdit from './OrganisationEdit';
 
+const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : ""
+
 export default function OrganisationPage(props) {
   const [organisation, setOrganisation] = useState({});
   const qs = require('qs');
   const history = useHistory();
 
   useEffect(() => {
-    axios.get("/api/v1/organisations/" + props.user.organisation_id)
+    axios.get(baseURL + "/api/v1/organisations/" + props.user.organisation_id)
       .then(res => setOrganisation(res.data.data))
   }, [props.user.organisation_id]);
 
   function leaveOrganisation() {
-    axios.patch("/api/v1/users/" + props.user.id, qs.stringify(
+    axios.patch(baseURL + "/api/v1/users/" + props.user.id, qs.stringify(
       {
         user: {
           organisation_id: null

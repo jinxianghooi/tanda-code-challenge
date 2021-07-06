@@ -5,6 +5,8 @@ import { useHistory } from 'react-router-dom';
 import OrganisationEdit from './OrganisationEdit';
 import OrganisationCreate from './OrganisationCreate';
 
+const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : ""
+
 export default function OrganisationList(props) {
   const [organisationData, setOrganisationData] = useState({});
   const [editOrganisation, setEditOrganisation] = useState(null);
@@ -12,12 +14,12 @@ export default function OrganisationList(props) {
   const history = useHistory();
 
   useEffect(() => {
-    axios.get("/api/v1/organisations.json")
+    axios.get(baseURL + "/api/v1/organisations.json")
       .then(res => setOrganisationData(res.data))
   }, []);
 
   function updateUserDetails(organisation_id, organisation_name) {
-    axios.patch("/api/v1/users/" + props.user.id, qs.stringify(
+    axios.patch(baseURL + "/api/v1/users/" + props.user.id, qs.stringify(
       {
         user: {
           organisation_id: organisation_id

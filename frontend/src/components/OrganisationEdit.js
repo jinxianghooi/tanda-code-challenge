@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom"
 import FormHook from './CustomHooks';
 import axios from 'axios';
 
+const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : ""
+
 export default function OrganisationEdit(props) {
   const { inputs, handleInputChange, handleSubmit }
     = FormHook(updateOrganisationData,
@@ -17,7 +19,7 @@ export default function OrganisationEdit(props) {
   function updateOrganisationData() {
     console.log(inputs.organisation_name);
     console.log(inputs.hourly_rate);
-    axios.patch("/api/v1/organisations/" + props.organisation.id, qs.stringify(
+    axios.patch(`${baseURL}/api/v1/organisations/${props.organisation.id}`, qs.stringify(
       {
         organisation: {
           name: inputs.organisation_name,

@@ -18,6 +18,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
+const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : "http://0.0.0.0:3001"
 
 export default function App() {
   const classes = useStyles();
@@ -31,6 +32,7 @@ export default function App() {
 
   useEffect(() => {
     if (!hasFetchedData.current) {
+      console.log(baseURL);
       loginStatus();
       hasFetchedData.current = true;
     }
@@ -54,7 +56,7 @@ export default function App() {
   }
 
   function loginStatus() {
-    axios.get('/api/v1/logged_in', { withCredentials: true })
+    axios.get(`${baseURL}/api/v1/logged_in`, { withCredentials: true })
       .then(response => {
         console.log(response)
         if (response.data.logged_in) {
@@ -66,7 +68,7 @@ export default function App() {
   }
 
   function postLogout(handleLogout) {
-    axios.post('/api/v1/logout', {});
+    axios.post(baseURL + "/api/v1/logout", {});
     handleLogout();
     return <Redirect to="/" />
   };

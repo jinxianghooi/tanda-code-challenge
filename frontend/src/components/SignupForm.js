@@ -4,6 +4,8 @@ import { Container, Typography, TextField, Button, Grid, Link } from "@material-
 import { Link as RouterLink, useHistory } from "react-router-dom"
 import axios from "axios";
 
+const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : ""
+
 export default function SignupForm(props) {
   // do axios stuff
   // add field validation
@@ -13,7 +15,7 @@ export default function SignupForm(props) {
   const history = useHistory();
 
   function createNewUser() {
-    axios.post('/api/v1/users', qs.stringify(
+    axios.post(baseURL + "/api/v1/users", qs.stringify(
       {
         user: {
           name: inputs.name,

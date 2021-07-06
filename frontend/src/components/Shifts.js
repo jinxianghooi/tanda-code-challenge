@@ -3,6 +3,8 @@ import axios from "axios";
 import { DataGrid } from '@material-ui/data-grid';
 import { Button } from "@material-ui/core";
 
+const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : ""
+
 export default function Shifts(props) {
 
   // TODO: get employeeName from shifts api instead of looking through entire userbase
@@ -23,9 +25,9 @@ export default function Shifts(props) {
   const [newShiftRow, setNewShiftRow] = useState(initialNewShiftRow);
 
   useEffect(() => {
-    axios.get("/api/v1/organisations/" + props.organisation.id + "/shifts.json")
+    axios.get(baseURL + "/api/v1/organisations/" + props.organisation.id + "/shifts.json")
       .then(response => setShiftData(response.data));
-    axios.get("/api/v1/users.json")
+    axios.get(baseURL + "/api/v1/users.json")
       .then(response => setUserData(response.data));
   }, [props.organisation.id]);
 
