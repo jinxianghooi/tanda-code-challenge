@@ -45,8 +45,8 @@ docker compose run backend rake db:seed
 ## Cleanup
 ```bash
 docker compose down
+docker image prune -a
 ```
-
 
 # Notes
 
