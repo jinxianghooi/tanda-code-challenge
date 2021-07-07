@@ -12,6 +12,7 @@ git clone https://github.com/jinxianghooi/tanda-code-challenge.git && cd tanda-c
 cd ruby_environment
 [ ! -d "./tmp/db" ] && mkdir -p tmp/db
 docker compose run --rm --service-ports ruby_dev
+
 # Run in docker container
 bundle update && bundle install
 rails server -p $PORT -b 0.0.0.0

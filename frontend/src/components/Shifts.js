@@ -14,6 +14,7 @@ export default function Shifts(props) {
   const [shiftData, setShiftData] = useState({});
   const [userData, setUserData] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
+
   const initialNewShiftRow = {
     id: 0,
     employeeName: props.user.name,
@@ -142,9 +143,9 @@ export default function Shifts(props) {
       })
   };
 
-  function string2ISODateString(date, time) {
-    const splitDate = [date.getDate(), date.getMonth(), date.getFullYear()];
-    const splitTime = time.split(":");
+  function string2ISODateString(dateString, timeString) {
+    const splitDate = dateString.split("/");
+    const splitTime = timeString.split(":");
 
     const dateObject = new Date(
       splitDate[2], splitDate[1],
