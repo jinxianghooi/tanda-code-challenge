@@ -37,9 +37,9 @@ If this is the first time running the build, create the database:
 (on a new terminal)
 ```bash
 cd tanda-code-challenge
-docker compose run backend rake db:create
-docker compose run backend rake db:migrate
-docker compose run backend rake db:seed
+docker compose run backend bundle exec rake db:create
+docker compose run backend bundle exec rake db:migrate
+docker compose run backend bundle exec rake db:seed
 ```
 
 ## Cleanup
