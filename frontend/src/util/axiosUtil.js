@@ -3,7 +3,7 @@ import axios from "axios";
 
 const baseURL = process.env.HOST_IP_ADDRESS ?
     process.env.HOST_IP_ADDRESS :
-    "http://0.0.0.0:3001"
+    ""
 
 /**
  * Retrieves session status from server.

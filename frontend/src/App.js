@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : "http://0.0.0.0:3001"
+const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : ""
 
 export default function App() {
   const classes = useStyles();
