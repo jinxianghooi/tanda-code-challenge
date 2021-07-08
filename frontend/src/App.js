@@ -7,6 +7,7 @@ import SignInForm from "./components/SignInForm";
 import SignupForm from "./components/SignupForm";
 import UserPage from "./components/UserPage";
 import axios from "axios";
+import { loginStatus } from "./util/axiosUtil";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -32,8 +33,7 @@ export default function App() {
 
   useEffect(() => {
     if (!hasFetchedData.current) {
-      console.log(baseURL);
-      loginStatus();
+      loginStatus(handleLogin, handleLogout);
       hasFetchedData.current = true;
     }
   });
@@ -55,17 +55,17 @@ export default function App() {
     setSession({ isLoggedIn: false, user: {} })
   }
 
-  function loginStatus() {
-    axios.get(`${baseURL}/api/v1/logged_in`, { withCredentials: true })
-      .then(response => {
-        console.log(response)
-        if (response.data.logged_in) {
-          handleLogin(response.data.user);
-        } else {
-          handleLogout();
-        }
-      }).catch(error => console.log('api errors: ', error))
-  }
+  // function loginStatus() {
+  //   axios.get(`${baseURL}/api/v1/logged_in`, { withCredentials: true })
+  //     .then(response => {
+  //       console.log(response)
+  //       if (response.data.logged_in) {
+  //         handleLogin(response.data.user);
+  //       } else {
+  //         handleLogout();
+  //       }
+  //     }).catch(error => console.log('api errors: ', error))
+  // }
 
   function postLogout(handleLogout) {
     axios.post(baseURL + "/api/v1/logout", {});
