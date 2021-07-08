@@ -1,6 +1,5 @@
 import React from "react";
 import { Typography, TextField, Button } from "@material-ui/core";
-import { useHistory } from "react-router-dom"
 import axios from "axios";
 import FormHook from "./CustomHooks";
 
@@ -11,9 +10,6 @@ export default function OrganisationCreate(props) {
     = FormHook(updateOrganisationData,
       {});
   const qs = require('qs');
-  const history = useHistory();
-
-  console.log(baseURL);
 
   function updateOrganisationData() {
     console.log(inputs.organisation_name);
@@ -26,9 +22,11 @@ export default function OrganisationCreate(props) {
         }
       }), { withCredentials: true })
       .then(response => {
-        history.push("/");
+        props.updateUserDetails(props.user.id, response.data.data.id);
+        // history.push("/");
       }).catch(error => console.log('api errors:', error))
   };
+
   return (
     <React.Fragment>
 

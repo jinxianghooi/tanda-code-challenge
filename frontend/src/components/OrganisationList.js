@@ -18,8 +18,8 @@ export default function OrganisationList(props) {
       .then(res => setOrganisationData(res.data))
   }, []);
 
-  function updateUserDetails(organisation_id, organisation_name) {
-    axios.patch(baseURL + "/api/v1/users/" + props.user.id, qs.stringify(
+  function updateUserDetails(user_id, organisation_id) {
+    axios.patch(baseURL + "/api/v1/users/" + user_id, qs.stringify(
       {
         user: {
           organisation_id: organisation_id
@@ -29,7 +29,7 @@ export default function OrganisationList(props) {
         if (response.data.updated) {
           console.log("updated");
           props.handleChange(response.data.user);
-          history.push("/user/organisation_id_" + props.user.organisation_id);
+          history.push("/user/organisation_id_" + response.data.user.organisation_id);
         } else {
           // do error stuff here
         }
@@ -50,7 +50,7 @@ export default function OrganisationList(props) {
                 <ListItemText primary={organisation.attributes.name} />
                 <Button
                   style={{ "margin": "2px" }}
-                  onClick={() => updateUserDetails(organisation.id, organisation.attributes.name)}
+                  onClick={() => updateUserDetails(props.user.id, organisation.id)}
                 >
                   Join
                 </Button>
@@ -69,7 +69,7 @@ export default function OrganisationList(props) {
             </React.Fragment>) : null
       }</List>
 
-      <OrganisationCreate />
+      <OrganisationCreate user={props.user} updateUserDetails={updateUserDetails} />
     </React.Fragment>
   );
 }
