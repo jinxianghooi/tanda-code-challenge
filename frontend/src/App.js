@@ -6,8 +6,7 @@ import Home from "./components/Home";
 import SignInForm from "./components/SignInForm";
 import SignupForm from "./components/SignupForm";
 import UserPage from "./components/UserPage";
-import axios from "axios";
-import { loginStatus } from "./util/axiosUtil";
+import { getLoginStatus, postLogout } from "./util/axiosUtil";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -18,8 +17,6 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   }
 }));
-
-const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : ""
 
 export default function App() {
   const classes = useStyles();
@@ -33,19 +30,10 @@ export default function App() {
 
   useEffect(() => {
     if (!hasFetchedData.current) {
-      loginStatus(handleLogin, handleLogout);
+      getLoginStatus(handleLogin, handleLogout);
       hasFetchedData.current = true;
     }
   });
-
-  // useEffect(async () => {
-  //   const response = await axios.get('/api/v1/logged_in', { withCredentials: true });
-  //   if (response.data.logged_in) {
-  //     handleLogin(response.data.user);
-  //   } else {
-  //     handleLogout();
-  //   }
-  // }, []);
 
   function handleLogin(data) {
     setSession({ isLoggedIn: true, user: data })
@@ -55,27 +43,11 @@ export default function App() {
     setSession({ isLoggedIn: false, user: {} })
   }
 
-  // function loginStatus() {
-  //   axios.get(`${baseURL}/api/v1/logged_in`, { withCredentials: true })
-  //     .then(response => {
-  //       console.log(response)
-  //       if (response.data.logged_in) {
-  //         handleLogin(response.data.user);
-  //       } else {
-  //         handleLogout();
-  //       }
-  //     }).catch(error => console.log('api errors: ', error))
-  // }
-
-  function postLogout(handleLogout) {
-    axios.post(baseURL + "/api/v1/logout", {});
+  function logoutCallback() {
+    postLogout();
     handleLogout();
     return <Redirect to="/" />
   };
-
-  // useEffect(() => {
-  //   axios.get('/api/v1/users/1').then(res => setUserData(res.data))
-  // }, []);
 
   return (
     hasFetchedData.current ?
@@ -119,7 +91,7 @@ export default function App() {
               <SignupForm handleLogin={handleLogin} />
             </Route>
             <Route path="/signout" exact >
-              {() => postLogout(handleLogout)}
+              {() => logoutCallback()}
             </Route>
           </Switch>
         </Router>
