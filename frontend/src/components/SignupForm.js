@@ -10,7 +10,14 @@ export default function SignupForm(props) {
   // do axios stuff
   // add field validation
 
-  const { inputs, handleInputChange, handleSubmit } = FormHook(createNewUser, {});
+  const { inputs, handleInputChange, handleSubmit } = FormHook(
+    createNewUser,
+    {
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: ""
+    });
   const qs = require('qs');
   const history = useHistory();
 
@@ -77,19 +84,25 @@ export default function SignupForm(props) {
             autoComplete="new-password"
             onChange={handleInputChange}
             value={inputs.password}
+            error={inputs.password.length > 0 && inputs.password.length < 6}
+            helperText={inputs.password.length > 0 && inputs.password.length < 6 ?
+              "Password must have at least 6 characters" : ""}
           />
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="password confirmation"
+            name="password_confirmation"
             label="Password confirmation"
             type="password"
             id="password_confirmation"
             autoComplete="new-password"
             onChange={handleInputChange}
-          // value={inputs.password}
+            value={inputs.password_confirmation}
+            error={inputs.password_confirmation.length > 5 && inputs.password !== inputs.password_confirmation}
+            helperText={inputs.password_confirmation.length > 5 && inputs.password !== inputs.password_confirmation ?
+              "Password and password confimation does not match" : ""}
           />
           <Button
             type="submit"
