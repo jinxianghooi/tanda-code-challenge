@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FormHook from "./CustomHooks";
 import { Container, Typography, TextField, Button, Grid, Link } from "@material-ui/core";
 import { Link as RouterLink, useHistory } from "react-router-dom"
@@ -18,6 +18,8 @@ export default function SignupForm(props) {
       password: "",
       password_confirmation: ""
     });
+  const [userExist, setUserExist] = useState(false);
+  const userExistMessage = "An account with this email address already exist. Please sign in to continue."
   const qs = require('qs');
   const history = useHistory();
 
@@ -34,8 +36,10 @@ export default function SignupForm(props) {
         if (response.data.status === "created") {
           props.handleLogin(response.data.user);
           history.push("/user");
+        } else if (response.data.status === "exist") {
+          setUserExist(true);
         } else {
-          // do error stuff here
+          // error
         }
       }).catch(error => console.log('api errors:', error))
   };
@@ -71,6 +75,8 @@ export default function SignupForm(props) {
             autoComplete="email"
             onChange={handleInputChange}
             value={inputs.email}
+            error={userExist}
+            helperText={userExist && userExistMessage}
           />
           <TextField
             variant="outlined"
