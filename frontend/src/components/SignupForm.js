@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import FormHook from "./CustomHooks";
 import { Container, Typography, TextField, Button, Grid, Link } from "@material-ui/core";
 import { Link as RouterLink, useHistory } from "react-router-dom"
@@ -10,7 +10,16 @@ export default function SignupForm(props) {
   // do axios stuff
   // add field validation
 
-  const { inputs, handleInputChange, handleSubmit } = FormHook(createNewUser, {});
+  const { inputs, handleInputChange, handleSubmit } = FormHook(
+    createNewUser,
+    {
+      name: "",
+      email: "",
+      password: "",
+      password_confirmation: ""
+    });
+  const [userExist, setUserExist] = useState(false);
+  const userExistMessage = "An account with this email address already exist. Please sign in to continue."
   const qs = require('qs');
   const history = useHistory();
 
@@ -27,8 +36,10 @@ export default function SignupForm(props) {
         if (response.data.status === "created") {
           props.handleLogin(response.data.user);
           history.push("/user");
+        } else if (response.data.status === "exist") {
+          setUserExist(true);
         } else {
-          // do error stuff here
+          // error
         }
       }).catch(error => console.log('api errors:', error))
   };
@@ -64,6 +75,8 @@ export default function SignupForm(props) {
             autoComplete="email"
             onChange={handleInputChange}
             value={inputs.email}
+            error={userExist}
+            helperText={userExist && userExistMessage}
           />
           <TextField
             variant="outlined"
@@ -77,19 +90,25 @@ export default function SignupForm(props) {
             autoComplete="new-password"
             onChange={handleInputChange}
             value={inputs.password}
+            error={inputs.password.length > 0 && inputs.password.length < 6}
+            helperText={inputs.password.length > 0 && inputs.password.length < 6 ?
+              "Password must have at least 6 characters" : ""}
           />
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            name="password confirmation"
+            name="password_confirmation"
             label="Password confirmation"
             type="password"
             id="password_confirmation"
             autoComplete="new-password"
             onChange={handleInputChange}
-          // value={inputs.password}
+            value={inputs.password_confirmation}
+            error={inputs.password_confirmation.length > 5 && inputs.password !== inputs.password_confirmation}
+            helperText={inputs.password_confirmation.length > 5 && inputs.password !== inputs.password_confirmation ?
+              "Password and password confimation does not match" : ""}
           />
           <Button
             type="submit"

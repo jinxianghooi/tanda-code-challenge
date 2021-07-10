@@ -23,6 +23,14 @@ module Api
 
       end
       def create
+        if User.exists?(email_address: user_params[:email_address])
+          render json:{
+            status: :exist
+          }, status: 409
+          return
+        end
+
+
         @user = User.new(user_params)
 
         if @user.save
@@ -32,7 +40,7 @@ module Api
             user: @user
           }
         else
-          render json: { error: user.errors.messages }, status: 500
+          render json: { error: @user.errors.messages }, status: 500
         end
       end
 
@@ -45,7 +53,7 @@ module Api
             user: @user
           }
         else
-          render json: { error: user.errors.messages }, status: 500
+          render json: { error: @user.errors.messages }, status: 500
         end
       end
 
