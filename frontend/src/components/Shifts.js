@@ -143,6 +143,7 @@ export default function Shifts(props) {
       })
   };
 
+  // Helper functions /////////////////////////////////////////////////////////
   function string2ISODateString(dateString, timeString) {
     const splitDate = dateString.split("/");
     const splitTime = timeString.split(":");
@@ -167,13 +168,13 @@ export default function Shifts(props) {
   function calculateHoursWorked(start, end, break_length) {
     const startDate = new Date(start);
     const endDate = new Date(end);
-    return ((endDate - startDate) / 1000 / 60 / 60) - (break_length / 60);
+    return (((endDate - startDate) / 1000 / 60 / 60) - (break_length / 60)).toFixed(2);
   };
 
   function calculateCost(hours_worked, rate) {
-    return hours_worked * rate;
+    return (hours_worked * rate).toFixed(2);
   };
-
+  /////////////////////////////////////////////////////////////////////////////
 
   return (
     <div style={{ height: 200, width: '100%' }}>
