@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Container, Typography, TextField, Button, Grid, Link } from "@material-ui/core";
 import { Link as RouterLink, useHistory } from "react-router-dom"
 import FormHook from './CustomHooks';
@@ -8,7 +8,14 @@ const baseURL = process.env.HOST_IP_ADDRESS ? process.env.HOST_IP_ADDRESS : ""
 
 export default function SignInForm(props) {
 
-  const { inputs, handleInputChange, handleSubmit } = FormHook(login, {});
+  const { inputs, handleInputChange, handleSubmit } = FormHook(
+    login,
+    {
+      email: "",
+      password: "",
+    });
+  const [invalidDetails, setInvalidDetails] = useState(false);
+  const invalidDetailsMessage = "Invalid email address or password. Please try again."
   const qs = require('qs');
   const history = useHistory();
 
@@ -25,9 +32,8 @@ export default function SignInForm(props) {
           console.log("logged in");
           props.handleLogin(response.data.user);
           history.push("/user");
-          // return <Redirect to="/home" />
         } else {
-          // not sure what to do yet
+          setInvalidDetails(true);
         }
       }).catch(error => console.log('api errors:', error))
   };
@@ -51,6 +57,7 @@ export default function SignInForm(props) {
             autoFocus
             onChange={handleInputChange}
             value={inputs.email}
+            error={invalidDetails}
           />
           <TextField
             variant="outlined"
@@ -64,6 +71,8 @@ export default function SignInForm(props) {
             autoComplete="current-password"
             onChange={handleInputChange}
             value={inputs.password}
+            error={invalidDetails}
+            helperText={invalidDetails && invalidDetailsMessage}
           />
           <Button
             type="submit"
