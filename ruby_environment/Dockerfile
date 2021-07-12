@@ -1,7 +1,7 @@
 FROM ruby:3.0.1
 
 RUN gem install rails bundler
-RUN gem install rails
+# RUN gem install rails
 RUN apt-get update -qq && apt-get install -y \
     curl \
     build-essential \
