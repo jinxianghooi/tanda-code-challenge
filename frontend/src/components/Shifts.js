@@ -18,7 +18,7 @@ export default function Shifts(props) {
   const initialNewShiftRow = {
     id: 0,
     employeeName: props.user.name,
-    shiftDate: new Date().toLocaleDateString("en-AU"),
+    shiftDate: new Date(),
     start: "",
     finish: "",
     break: ""
@@ -96,23 +96,23 @@ export default function Shifts(props) {
     ({ id, field, props }) => {
       switch (field) {
         case "employeeName":
-          setNewShiftRow({ ...newShiftRow, employeeName: props.value, })
+          setNewShiftRow({ ...newShiftRow, employeeName: props.value, });
           break;
 
         case "shiftDate":
-          setNewShiftRow({ ...newShiftRow, shiftDate: props.value, })
+          setNewShiftRow({ ...newShiftRow, shiftDate: new Date(props.value), });
           break;
 
         case "start":
-          setNewShiftRow({ ...newShiftRow, start: props.value, })
+          setNewShiftRow({ ...newShiftRow, start: props.value, });
           break;
 
         case "finish":
-          setNewShiftRow({ ...newShiftRow, finish: props.value, })
+          setNewShiftRow({ ...newShiftRow, finish: props.value, });
           break;
 
         case "break":
-          setNewShiftRow({ ...newShiftRow, break: props.value, })
+          setNewShiftRow({ ...newShiftRow, break: props.value, });
           break;
 
         default:
@@ -144,15 +144,14 @@ export default function Shifts(props) {
   };
 
   // Helper functions /////////////////////////////////////////////////////////
-  function string2ISODateString(dateString, timeString) {
-    const splitDate = dateString.split("/");
+  function string2ISODateString(dateObject, timeString) {
     const splitTime = timeString.split(":");
 
-    const dateObject = new Date(
-      splitDate[2], splitDate[1],
-      splitDate[0], parseInt(splitTime[0]), parseInt(splitTime[1]));
+    const date = new Date(
+      dateObject.getFullYear(), dateObject.getMonth(),
+      dateObject.getDate(), parseInt(splitTime[0]), parseInt(splitTime[1]));
 
-    return dateObject.toISOString();
+    return date.toISOString();
   };
 
   function parseDate(dateTimeString) {
