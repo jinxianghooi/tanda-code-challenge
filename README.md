@@ -50,6 +50,10 @@ docker compose run backend bundle exec rake db:seed
 docker compose down
 docker image prune -a
 ```
+Magic words to cleanup EVERYTHING
+```bash
+docker system prune
+```
 
 # Notes
 ## Error when running `docker compose`
